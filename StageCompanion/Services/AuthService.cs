@@ -15,6 +15,7 @@ namespace StageCompanion.Services
     public class AuthService : IAuthService
     {
         private IHttpService HttpService => DependencyService.Get<IHttpService>();
+        private ITokenService TokenService => DependencyService.Get<ITokenService>();
 
         public async Task<string> GetValidationErrors(HttpResponseMessage response)
         {
@@ -27,13 +28,13 @@ namespace StageCompanion.Services
             var response = await HttpService.SendRequestAsync(HttpMethod.Post, "/auth/login", json);
             if (response.IsSuccessStatusCode)
             {
-                string token = await GetTokenValueAsync(response);
-                var jwt = DecryptJwtToken(token);
-                await EncryptUserDataAsync(token, credentials, jwt);
+                string token = await TokenService.GetTokenValueAsync(response);
+                var jwt = TokenService.DecryptJwtToken(token);
+                await TokenService.EncryptUserClaimsAsync(token, credentials, jwt);
                 App.CurrentUser = JsonConvert.DeserializeObject<User>(jwt.Subject);
                 return true;
             }
-            if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == (HttpStatusCode)422)
+            else if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == (HttpStatusCode)422)
             {
                 string content = await response.Content.ReadAsStringAsync();
                 var errors = JsonConvert.DeserializeObject<AuthorizationErrorResponse>(content);
@@ -66,49 +67,8 @@ namespace StageCompanion.Services
             return messageResponse.Message;
         }
 
-        public async Task<bool> ValidateToken()
-        {
-            string expiredAt = await SecureStorage.GetAsync("expiredAt");
-            if (!string.IsNullOrEmpty(expiredAt))
-            {
-                DateTime expiredAtTime = DateTime.Parse(expiredAt);
-                if (expiredAtTime > DateTime.UtcNow)
-                {
-                    return true;
-                }
-                else
-                {
-                    return await RefreshToken();
-                }
-            }
-            return false;
-        }
-
-        private async Task EncryptUserDataAsync(string token, Credentials credentials, JwtSecurityToken jwt)
-        {
-            await SecureStorage.SetAsync("token", token);
-            await SecureStorage.SetAsync("password", credentials.Password);
-            await SecureStorage.SetAsync("email", credentials.Password);
-            DateTime expiredAt = DateTimeOffset.FromUnixTimeSeconds((long)jwt.Payload.Exp).UtcDateTime;
-            await SecureStorage.SetAsync("expiredAt", expiredAt.ToString());            
-        }       
-
-        private JwtSecurityToken DecryptJwtToken(string token)
-        {
-            var handler = new JwtSecurityTokenHandler();
-            var jwt = handler.ReadJwtToken(token);
-            return jwt;
-        }
-
-        private async Task<string> GetTokenValueAsync(HttpResponseMessage response)
-        {
-            string responseContent = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<TokenResponse>(responseContent).Token;
-        }       
-
-        private async Task<bool> RefreshToken()
-        {
-            var authService = DependencyService.Get<AuthService>();
+        public async Task<bool> LoginFromStorage()
+        {            
             string email = await SecureStorage.GetAsync("email");
             string password = await SecureStorage.GetAsync("password");
             if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
@@ -118,9 +78,11 @@ namespace StageCompanion.Services
                     Email = email,
                     Password = password
                 };
-                return await authService.Login(credentials);
+                return await Login(credentials);
             }
             return false;
         }
+
+
     }
 }

@@ -21,16 +21,17 @@ namespace StageCompanion
             DependencyService.Register<MockDataStore>();
             DependencyService.Register<IHttpService, HttpService>();
             DependencyService.Register<IAuthService, AuthService>();
+            DependencyService.Register<ITokenService, TokenService>();
             MainPage = new AppShell();
         }
 
         protected override async void OnStart()
         {
-        var AuthService = DependencyService.Get<AuthService>();
+            var TokenService = DependencyService.Get<ITokenService>();
             bool isValidated = false;
             try
             {
-                isValidated = await AuthService.ValidateToken();
+                isValidated = await TokenService.ValidateToken();
             }
             catch (Exception ex)
             {
@@ -40,9 +41,7 @@ namespace StageCompanion
             if (isValidated)
                 await Shell.Current.GoToAsync($"///{nameof(ItemsPage)}");
             else
-            {
                 await Shell.Current.GoToAsync($"///{nameof(LoginPage)}");
-            }
         }
 
         protected override void OnSleep()
@@ -51,11 +50,11 @@ namespace StageCompanion
 
         protected override async void OnResume()
         {
-            var AuthService = DependencyService.Get<AuthService>();
+            var TokenService = DependencyService.Get<ITokenService>();
             bool isValidated = false;
             try
             {
-                isValidated = await AuthService.ValidateToken();
+                isValidated = await TokenService.ValidateToken();
             }
             catch (Exception ex)
             {
@@ -66,6 +65,6 @@ namespace StageCompanion
             {
                 await Shell.Current.GoToAsync($"///{nameof(LoginPage)}");
             }
-        }        
+        }
     }
 }

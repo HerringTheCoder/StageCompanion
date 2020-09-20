@@ -8,6 +8,6 @@ namespace StageCompanion.Interfaces
     {       
         Task<bool> Login(Credentials credentials);
         Task<string> Register(Credentials Credentials);
-        Task<bool> ValidateToken();
+        Task<bool> LoginFromStorage();
     }
 }
