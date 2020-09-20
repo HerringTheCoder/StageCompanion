@@ -6,7 +6,8 @@ namespace StageCompanion.Interfaces
 {
     public interface IAuthService
     {       
-        Task Login(Credentials credentials);
-        Task<string> Register(Credentials Credentials);     
+        Task<bool> Login(Credentials credentials);
+        Task<string> Register(Credentials Credentials);
+        Task<bool> ValidateToken();
     }
 }

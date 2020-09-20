@@ -24,6 +24,8 @@
             <Entry x:Name="PasswordEntry" IsPassword="True" Text="{Binding Path=Credentials.Password}" Placeholder="Your Password"/>
             <Entry x:Name="PasswordConfirmationEntry" IsPassword="True" Text="{Binding Path=Credentials.PasswordConfirmation}" Placeholder="Password confirmation"/>
             <Button VerticalOptions="Center" Text="Register" Command="{Binding RegisterCommand}"/>
+            <Button VerticalOptions="Center" Text="Back to Login" Command="{Binding LoginCommand}"/>
+            <ActivityIndicator Color="Orange" IsRunning="{Binding IsBusy}"/>
             <Label Text="{Binding Path=Response.Message}" TextColor="{Binding Path=Response.ColorName}" FontSize="Large" HorizontalTextAlignment="Center"/>
         </StackLayout>
     </ContentPage.Content>

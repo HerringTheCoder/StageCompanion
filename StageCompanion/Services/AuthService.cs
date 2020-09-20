@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using System;
 using System.Net;
-using System.Collections.Generic;
 using StageCompanion.Models.Responses;
 using System.IdentityModel.Tokens.Jwt;
+using Xamarin.Essentials;
 
 namespace StageCompanion.Services
 {
@@ -21,17 +21,26 @@ namespace StageCompanion.Services
             return await response.Content.ReadAsStringAsync();
         }
 
-        public async Task Login(Credentials credentials)
+        public async Task<bool> Login(Credentials credentials)
         {
             string json = JsonConvert.SerializeObject(credentials);
             var response = await HttpService.SendRequestAsync(HttpMethod.Post, "/auth/login", json);
             if (response.IsSuccessStatusCode)
             {
-                //Write-in user's token and stuff and return
+                string token = await GetTokenValueAsync(response);
+                var jwt = DecryptJwtToken(token);
+                await EncryptUserDataAsync(token, credentials, jwt);
+                App.CurrentUser = JsonConvert.DeserializeObject<User>(jwt.Subject);
+                return true;
             }
             if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == (HttpStatusCode)422)
-                throw new Exception("Wrong input format");
-
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                var errors = JsonConvert.DeserializeObject<AuthorizationErrorResponse>(content);
+                string emailErrors = errors.Email != null ? string.Join($"\n", errors.Email.ToArray()) : null;
+                string passwordErrors = errors.Password != null ? string.Join($"\n", errors.Password.ToArray()) : null;
+                throw new Exception(emailErrors + passwordErrors);
+            }
             throw new Exception("These credentials do not match our records");
         }
 
@@ -45,7 +54,7 @@ namespace StageCompanion.Services
             var response = await HttpService.SendRequestAsync(HttpMethod.Post, "/auth/register", json);
             string content = await response.Content.ReadAsStringAsync();
 
-            if (!response.IsSuccessStatusCode)
+            if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == (HttpStatusCode)422)
             {
                 var errors = JsonConvert.DeserializeObject<AuthorizationErrorResponse>(content);
                 string emailErrors = errors.Email != null ? string.Join($"\n", errors.Email.ToArray()) : null;
@@ -57,18 +66,61 @@ namespace StageCompanion.Services
             return messageResponse.Message;
         }
 
-        public User GetUser(string token)
+        public async Task<bool> ValidateToken()
+        {
+            string expiredAt = await SecureStorage.GetAsync("expiredAt");
+            if (!string.IsNullOrEmpty(expiredAt))
+            {
+                DateTime expiredAtTime = DateTime.Parse(expiredAt);
+                if (expiredAtTime > DateTime.UtcNow)
+                {
+                    return true;
+                }
+                else
+                {
+                    return await RefreshToken();
+                }
+            }
+            return false;
+        }
+
+        private async Task EncryptUserDataAsync(string token, Credentials credentials, JwtSecurityToken jwt)
+        {
+            await SecureStorage.SetAsync("token", token);
+            await SecureStorage.SetAsync("password", credentials.Password);
+            await SecureStorage.SetAsync("email", credentials.Password);
+            DateTime expiredAt = DateTimeOffset.FromUnixTimeSeconds((long)jwt.Payload.Exp).UtcDateTime;
+            await SecureStorage.SetAsync("expiredAt", expiredAt.ToString());            
+        }       
+
+        private JwtSecurityToken DecryptJwtToken(string token)
         {
             var handler = new JwtSecurityTokenHandler();
             var jwt = handler.ReadJwtToken(token);
-            var user = JsonConvert.DeserializeObject<User>(jwt.Subject);
-            return user;
+            return jwt;
         }
 
-        private async Task<string> GetTokenValue(HttpResponseMessage response)
+        private async Task<string> GetTokenValueAsync(HttpResponseMessage response)
         {
             string responseContent = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<TokenResponse>(responseContent).Token;
+        }       
+
+        private async Task<bool> RefreshToken()
+        {
+            var authService = DependencyService.Get<AuthService>();
+            string email = await SecureStorage.GetAsync("email");
+            string password = await SecureStorage.GetAsync("password");
+            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
+            {
+                var credentials = new Credentials
+                {
+                    Email = email,
+                    Password = password
+                };
+                return await authService.Login(credentials);
+            }
+            return false;
         }
     }
 }

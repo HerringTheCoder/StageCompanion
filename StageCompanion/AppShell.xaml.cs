@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using StageCompanion.ViewModels;
 using StageCompanion.Views;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace StageCompanion
@@ -17,7 +16,8 @@ namespace StageCompanion
 
         private async void OnLogoutClicked(object sender, EventArgs e)
         {            
-            await Shell.Current.GoToAsync($"///{nameof(LoginPage)}");            
+            await Current.GoToAsync($"///{nameof(LoginPage)}");
+            SecureStorage.RemoveAll();
         }
     }
 }
