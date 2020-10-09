@@ -10,12 +10,21 @@
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.9" PrivateAssets="All" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
     <PackageReference Include="WinInsider.System.Net.Http.Formatting" Version="1.0.14" />
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1364" />  
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1534" />  
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.0-pre2" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Views\RegisterPage.xaml">
+    <Reference Include="Mono.Android">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v9.0\Mono.Android.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Views\Auth\RegisterPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\FilesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

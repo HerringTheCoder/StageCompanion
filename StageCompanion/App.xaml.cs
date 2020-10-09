@@ -3,10 +3,10 @@ using Xamarin.Forms;
 using StageCompanion.Services;
 using StageCompanion.Models;
 using StageCompanion.Interfaces;
-using Xamarin.Essentials;
 using System.Threading.Tasks;
 using StageCompanion.Views;
 using System.Diagnostics;
+using StageCompanion.Repositories;
 
 namespace StageCompanion
 {
@@ -22,33 +22,28 @@ namespace StageCompanion
             DependencyService.Register<IHttpService, HttpService>();
             DependencyService.Register<IAuthService, AuthService>();
             DependencyService.Register<ITokenService, TokenService>();
+            DependencyService.Register<IDataStore<File>, FileRepository>();
             MainPage = new AppShell();
         }
 
         protected override async void OnStart()
         {
-            var TokenService = DependencyService.Get<ITokenService>();
-            bool isValidated = false;
-            try
-            {
-                isValidated = await TokenService.ValidateToken();
-            }
-            catch (Exception ex)
-            {
-                Debug.Write(ex.Message);
-                await Shell.Current.GoToAsync($"///{nameof(LoginPage)}");
-            }
-            if (isValidated)
+            if (await CheckAuthorization())
                 await Shell.Current.GoToAsync($"///{nameof(ItemsPage)}");
             else
                 await Shell.Current.GoToAsync($"///{nameof(LoginPage)}");
+        }
+
+        protected override async void OnResume()
+        {
+            await CheckAuthorization();
         }
 
         protected override void OnSleep()
         {
         }
 
-        protected override async void OnResume()
+        private async Task<bool> CheckAuthorization()
         {
             var TokenService = DependencyService.Get<ITokenService>();
             bool isValidated = false;
@@ -61,10 +56,7 @@ namespace StageCompanion
                 Debug.Write(ex.Message);
                 await Shell.Current.GoToAsync($"///{nameof(LoginPage)}");
             }
-            if (!isValidated)
-            {
-                await Shell.Current.GoToAsync($"///{nameof(LoginPage)}");
-            }
+            return isValidated;
         }
     }
 }

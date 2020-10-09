@@ -13,7 +13,8 @@ namespace StageCompanion.ViewModels
     {
         public Command LoginCommand { get; }
 
-        private IAuthService AuthService => DependencyService.Get<IAuthService>();
+        private IAuthService AuthService => DependencyService.Get<IAuthService>();      
+        private IDataStore<File> FileRepository => DependencyService.Get<IDataStore<File>>();      
 
         public Credentials Credentials { get; set; }
 
@@ -28,7 +29,7 @@ namespace StageCompanion.ViewModels
         }
 
         private async void OnLoginClicked(object obj)
-        {
+        {          
             try
             {
                 IsBusy = true;

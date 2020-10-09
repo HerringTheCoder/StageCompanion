@@ -11,13 +11,13 @@ namespace StageCompanion
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
-            Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));        
+            Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
         }
 
         private async void OnLogoutClicked(object sender, EventArgs e)
         {
             SecureStorage.RemoveAll();
-            await Current.GoToAsync($"///{nameof(LoginPage)}");           
+            await Current.GoToAsync($"///{nameof(LoginPage)}");
         }
     }
 }

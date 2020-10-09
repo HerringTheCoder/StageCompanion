@@ -7,7 +7,6 @@ using Xamarin.Forms;
 using System;
 using System.Net;
 using StageCompanion.Models.Responses;
-using System.IdentityModel.Tokens.Jwt;
 using Xamarin.Essentials;
 
 namespace StageCompanion.Services
