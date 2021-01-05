@@ -1,14 +1,9 @@
-﻿using Newtonsoft.Json;
-using PropertyChanged;
+﻿using PropertyChanged;
 using StageCompanion.Interfaces;
 using StageCompanion.Models;
 using StageCompanion.Models.Responses;
-using StageCompanion.Services;
 using StageCompanion.Views;
 using System;
-using System.ComponentModel;
-using System.Net;
-using System.Net.Http;
 using Xamarin.Forms;
 
 namespace StageCompanion.ViewModels

@@ -22,6 +22,7 @@ namespace StageCompanion
             DependencyService.Register<IHttpService, HttpService>();
             DependencyService.Register<IAuthService, AuthService>();
             DependencyService.Register<ITokenService, TokenService>();
+            DependencyService.Register<IFileService, FileService>();
             DependencyService.Register<IDataStore<File>, FileRepository>();
             MainPage = new AppShell();
         }

@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
-using System.Drawing;
 
 namespace StageCompanion.Models.Responses
 {

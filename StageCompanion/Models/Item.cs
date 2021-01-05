@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace StageCompanion.Models
+﻿namespace StageCompanion.Models
 {
     public class Item
     {

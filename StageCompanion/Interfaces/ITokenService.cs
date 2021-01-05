@@ -1,9 +1,6 @@
 ﻿using StageCompanion.Models;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StageCompanion.Interfaces

@@ -13,8 +13,7 @@ namespace StageCompanion.ViewModels
     {
         public Command LoginCommand { get; }
 
-        private IAuthService AuthService => DependencyService.Get<IAuthService>();      
-        private IDataStore<File> FileRepository => DependencyService.Get<IDataStore<File>>();      
+        private IAuthService AuthService => DependencyService.Get<IAuthService>();
 
         public Credentials Credentials { get; set; }
 
