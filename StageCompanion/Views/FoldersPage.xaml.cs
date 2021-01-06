@@ -13,21 +13,21 @@ using StageCompanion.ViewModels;
 
 namespace StageCompanion.Views
 {
-    public partial class ItemsPage : ContentPage
+    public partial class FoldersPage : ContentPage
     {
-        ItemsViewModel _viewModel;
+        FoldersViewModel _foldersViewModel;
 
-        public ItemsPage()
+        public FoldersPage()
         {
             InitializeComponent();
 
-            BindingContext = _viewModel = new ItemsViewModel();
+            BindingContext = _foldersViewModel = new FoldersViewModel();
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            _viewModel.OnAppearing();
+            _foldersViewModel.OnAppearing();
         }
     }
 }

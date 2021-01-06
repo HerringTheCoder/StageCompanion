@@ -9,14 +9,14 @@ using StageCompanion.ViewModels;
 
 namespace StageCompanion.Views
 {
-    public partial class NewItemPage : ContentPage
+    public partial class NewFilePage : ContentPage
     {
         public Item Item { get; set; }
 
-        public NewItemPage()
+        public NewFilePage()
         {
             InitializeComponent();
-            BindingContext = new NewItemViewModel();
+            BindingContext = new NewFileViewModel();
         }
     }
 }

@@ -1,43 +1,43 @@
-﻿using Newtonsoft.Json;
-using StageCompanion.Interfaces;
-using StageCompanion.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Xamarin.Forms;
+using Humanizer;
+using Newtonsoft.Json;
+using StageCompanion.Models;
+using StageCompanion.Repositories.Interfaces;
 
 namespace StageCompanion.Repositories
 {
-    public class FileRepository : IDataStore<File>
+    public class FileRepository : BaseRepository<File>, IFileRepository
     {
-        private IHttpService HttpService => DependencyService.Get<IHttpService>();
-
-        public async Task<bool> AddItemAsync(File file)
+        public async Task<List<File>> GetAllByFolderId(int folderId)
         {
-            string json = JsonConvert.SerializeObject(file);
-            await HttpService.SendRequestAsync(HttpMethod.Post, "/files", json);
-            return await Task.FromResult(true);
+            string path = $"/{nameof(File).Pluralize().Transform(To.LowerCase)}/{nameof(Folder).Transform(To.LowerCase)}/{folderId}";
+        
+            var response = await HttpService.SendRequestAsync(HttpMethod.Get, path);
+            if (response.IsSuccessStatusCode)
+            {
+                string responseContent = await response.Content.ReadAsStringAsync();
+                var files = JsonConvert.DeserializeObject<List<File>>(responseContent);
+                return files;
+            }
+
+            return new List<File>();
         }
 
-        public Task<bool> DeleteItemAsync(string id)
+        public override async Task<File> GetAsync(string fileId)
         {
-            throw new NotImplementedException();
-        }
+            string path = $"/{nameof(File).Pluralize().Transform(To.LowerCase)}/download/{fileId}";
 
-        public Task<File> GetItemAsync(string id)
-        {
-            throw new NotImplementedException();
-        }
+            var response = await HttpService.SendRequestAsync(HttpMethod.Get, path);
+            if (response.IsSuccessStatusCode)
+            {
+                string responseContent = await response.Content.ReadAsStringAsync();
+                var file = JsonConvert.DeserializeObject<File>(responseContent);
+                return file;
+            }
 
-        public Task<IEnumerable<File>> GetItemsAsync(bool forceRefresh = false)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateItemAsync(File item)
-        {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

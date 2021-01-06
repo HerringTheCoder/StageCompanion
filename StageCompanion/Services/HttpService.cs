@@ -20,9 +20,11 @@ namespace StageCompanion.Services
                 BaseAddress = new Uri(Url)
             };
             var request = new HttpRequestMessage(method, path);
-            if (json != null)
+            if (!string.IsNullOrEmpty(json))
+            {
                 request.Content = new StringContent(json, Encoding.UTF8, "application/json");
-            request.Headers.Add("Accept", "application/json");
+                request.Headers.Add("Accept", "application/json");
+            }
             request.Headers.Add("Authorization", $"Bearer {_token}");
             request.Headers.Add("User-Agent", "StageCompanion-Mobile");
             return await client.SendAsync(request);

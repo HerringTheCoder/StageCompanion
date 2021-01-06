@@ -10,8 +10,9 @@ namespace StageCompanion
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
-            Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
+            Routing.RegisterRoute(nameof(FilesPage), typeof(FilesPage));
+            Routing.RegisterRoute(nameof(FileDetailPage), typeof(FileDetailPage));
+            Routing.RegisterRoute(nameof(NewFilePage), typeof(NewFilePage));
         }
 
         private async void OnLogoutClicked(object sender, EventArgs e)

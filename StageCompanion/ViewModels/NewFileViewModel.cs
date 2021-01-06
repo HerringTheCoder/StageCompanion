@@ -1,42 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
 using StageCompanion.Models;
 using Xamarin.Forms;
 
 namespace StageCompanion.ViewModels
 {
-    public class NewItemViewModel : BaseViewModel
+    public class NewFileViewModel : BaseViewModel
     {
-        private string text;
-        private string description;
-
-        public NewItemViewModel()
+        public NewFileViewModel()
         {
             SaveCommand = new Command(OnSave, ValidateSave);
             CancelCommand = new Command(OnCancel);
-            this.PropertyChanged +=
-                (_, __) => SaveCommand.ChangeCanExecute();
         }
 
         private bool ValidateSave()
         {
-            return !String.IsNullOrWhiteSpace(text)
-                && !String.IsNullOrWhiteSpace(description);
+            return !String.IsNullOrWhiteSpace(Text)
+                && !String.IsNullOrWhiteSpace(Description);
         }
 
-        public string Text
-        {
-            get => text;
-            set => SetProperty(ref text, value);
-        }
-
-        public string Description
-        {
-            get => description;
-            set => SetProperty(ref description, value);
-        }
+        public string Text { get; set; }
+        public string Description { get; set; }
 
         public Command SaveCommand { get; }
         public Command CancelCommand { get; }
@@ -56,7 +39,7 @@ namespace StageCompanion.ViewModels
                 Description = Description
             };
 
-            await DataStore.AddItemAsync(newItem);
+            //await DataStore.AddItemAsync(newItem);
 
             // This will pop the current page off the navigation stack
             await Shell.Current.GoToAsync("..");

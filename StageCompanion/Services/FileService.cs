@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using StageCompanion.Interfaces;
+using StageCompanion.Repositories.Interfaces;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using File = StageCompanion.Models.File;
@@ -12,7 +12,7 @@ namespace StageCompanion.Services
 {
     public class FileService : IFileService
     {
-        private IDataStore<File> FileRepository => DependencyService.Get<IDataStore<File>>();
+        private IBaseRepository<File> FileRepository => DependencyService.Get<IBaseRepository<File>>();
 
         public async Task SendFile(Stream stream, FileResult result)
         {
@@ -27,7 +27,7 @@ namespace StageCompanion.Services
                 FolderId = 1,
                 Content = Convert.ToBase64String(imageArray)
             };
-            await FileRepository.AddItemAsync(file);
+            await FileRepository.AddAsync(file);
         }
     }
 }

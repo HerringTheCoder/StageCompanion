@@ -7,7 +7,7 @@ using StageCompanion.Models;
 
 namespace StageCompanion.Services
 {
-    public class MockDataStore : IDataStore<Item>
+    public class MockDataStore
     {
         readonly List<Item> items;
 
@@ -24,14 +24,14 @@ namespace StageCompanion.Services
             };
         }
 
-        public async Task<bool> AddItemAsync(Item item)
+        public async Task<bool> AddAsync(Item item)
         {
             items.Add(item);
 
             return await Task.FromResult(true);
         }
 
-        public async Task<bool> UpdateItemAsync(Item item)
+        public async Task<bool> UpdateAsync(Item item)
         {
             var oldItem = items.FirstOrDefault(arg => arg.Id == item.Id);
             items.Remove(oldItem);
@@ -40,7 +40,7 @@ namespace StageCompanion.Services
             return await Task.FromResult(true);
         }
 
-        public async Task<bool> DeleteItemAsync(string id)
+        public async Task<bool> DeleteAsync(string id)
         {
             var oldItem = items.FirstOrDefault(arg => arg.Id == id);
             items.Remove(oldItem);
@@ -48,12 +48,12 @@ namespace StageCompanion.Services
             return await Task.FromResult(true);
         }
 
-        public async Task<Item> GetItemAsync(string id)
+        public async Task<Item> GetAsync(string id)
         {
             return await Task.FromResult(items.FirstOrDefault(s => s.Id == id));
         }
 
-        public async Task<IEnumerable<Item>> GetItemsAsync(bool forceRefresh = false)
+        public async Task<IEnumerable<Item>> GetAsync(bool forceRefresh = false)
         {
             return await Task.FromResult(items);
         }

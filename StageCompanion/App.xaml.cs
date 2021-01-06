@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using StageCompanion.Views;
 using System.Diagnostics;
 using StageCompanion.Repositories;
+using StageCompanion.Repositories.Interfaces;
 
 namespace StageCompanion
 {
@@ -23,14 +24,15 @@ namespace StageCompanion
             DependencyService.Register<IAuthService, AuthService>();
             DependencyService.Register<ITokenService, TokenService>();
             DependencyService.Register<IFileService, FileService>();
-            DependencyService.Register<IDataStore<File>, FileRepository>();
+            DependencyService.Register<IFileRepository, FileRepository>();
+            DependencyService.Register<IFolderRepository, FolderRepository>();
             MainPage = new AppShell();
         }
 
         protected override async void OnStart()
         {
             if (await CheckAuthorization())
-                await Shell.Current.GoToAsync($"///{nameof(ItemsPage)}");
+                await Shell.Current.GoToAsync($"///{nameof(FoldersPage)}");
             else
                 await Shell.Current.GoToAsync($"///{nameof(LoginPage)}");
         }
