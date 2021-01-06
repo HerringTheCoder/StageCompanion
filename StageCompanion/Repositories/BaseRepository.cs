@@ -23,7 +23,7 @@ namespace StageCompanion.Repositories
             {
                 return await Task.FromResult(true);
             }
-
+            string responseMessage = await response.Content.ReadAsStringAsync();
             return await Task.FromResult(false);
         }
 

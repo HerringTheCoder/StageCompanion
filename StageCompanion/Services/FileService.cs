@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +13,12 @@ namespace StageCompanion.Services
 {
     public class FileService : IFileService
     {
-        private IBaseRepository<File> FileRepository => DependencyService.Get<IBaseRepository<File>>();
+        private readonly IFileRepository _fileRepository;
+
+        public FileService()
+        {
+            _fileRepository = DependencyService.Get<IFileRepository>();
+        }
 
         public async Task SendFile(Stream stream, FileResult result)
         {
@@ -27,7 +33,7 @@ namespace StageCompanion.Services
                 FolderId = 1,
                 Content = Convert.ToBase64String(imageArray)
             };
-            await FileRepository.AddAsync(file);
+            await _fileRepository.AddAsync(file);
         }
     }
 }

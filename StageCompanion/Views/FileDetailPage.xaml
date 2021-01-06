@@ -7,8 +7,7 @@
     <StackLayout Spacing="20" Padding="15">
         <Label Text="Name:" FontSize="Medium" />
         <Label Text="{Binding Name}" FontSize="Small"/>
-        <Label Text="Extension:" FontSize="Medium" />
-        <Label Text="{Binding Extension}" FontSize="Small"/>
+        <Image Source="{Binding FileSource}"/>
     </StackLayout>
     
 </ContentPage>
