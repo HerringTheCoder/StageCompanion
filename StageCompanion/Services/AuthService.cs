@@ -16,11 +16,6 @@ namespace StageCompanion.Services
         private IHttpService HttpService => DependencyService.Get<IHttpService>();
         private ITokenService TokenService => DependencyService.Get<ITokenService>();
 
-        public async Task<string> GetValidationErrors(HttpResponseMessage response)
-        {
-            return await response.Content.ReadAsStringAsync();
-        }
-
         public async Task<bool> Login(Credentials credentials)
         {
             string json = JsonConvert.SerializeObject(credentials);

@@ -1,4 +1,6 @@
-﻿namespace StageCompanion.Models
+﻿using Xamarin.Forms;
+
+namespace StageCompanion.Models
 {
     public class File : BaseDataModel
     {
@@ -9,5 +11,6 @@
         public string Path { get; set; }
         public string Extension { get; set; }
         public string Content { get; set; }
+        public ImageSource FileIcon { get; set; }
     }
 }

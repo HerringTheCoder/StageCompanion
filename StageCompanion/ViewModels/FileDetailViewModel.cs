@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using StageCompanion.Repositories.Interfaces;
 using Xamarin.Forms;
 
@@ -14,9 +15,12 @@ namespace StageCompanion.ViewModels
 
         public string Name { get; set; }
         public string FileId { get; set; }
+        public string Content { get; set; }
+        public string FontSize { get; set; }
+        public Color FontColor { get; set; }
         public ImageSource FileSource { get; set; }
 
-        public async void LoadFile()
+        public async Task LoadFile()
         {
             try
             {
@@ -25,22 +29,31 @@ namespace StageCompanion.ViewModels
                 {
                     FileId = file.Id.ToString();
                     Name = file.Name;
+                    FontColor = Color.Default;
+                    Content = file.Content;
                     if (file.Extension == "jpg" || file.Extension =="jpeg" || file.Extension =="png" || file.Extension =="gif")
                     {
-                        byte[] byteArray = Convert.FromBase64String(file.Content);
-                        MemoryStream stream = new MemoryStream(byteArray);
-                        FileSource = ImageSource.FromStream(() => stream);
+                        FileSource = ImageSource.FromStream(FetchFileStream);
                     }
                 }
                 else
                 {
                     Name = "File not found";
+                    FontSize = "36";
+                    FontColor = Color.Red;
                 }
             }
             catch (Exception)
             {
                 Debug.WriteLine("Failed to Load Item");
             }
+        }
+
+        public Stream FetchFileStream()
+        {
+            byte[] byteArray = Convert.FromBase64String(Content);
+            MemoryStream stream = new MemoryStream(byteArray);
+            return stream;
         }
     }
 }

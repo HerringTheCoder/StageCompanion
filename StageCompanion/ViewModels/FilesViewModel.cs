@@ -36,10 +36,14 @@ namespace StageCompanion.ViewModels
             try
             {
                 Files.Clear();
-                var folders = await _fileRepository.GetAllByFolderId(Convert.ToInt32(FolderId));
-                foreach (var folder in folders)
+                var files = await _fileRepository.GetAllByFolderId(Convert.ToInt32(FolderId));
+                foreach (var file in files)
                 {
-                    Files.Add(folder);
+                    if (file.Extension == "jpg" || file.Extension == "jpeg" || file.Extension == "png")
+                    {
+                        file.FileIcon = ImageSource.FromFile("image_icon.png");
+                    }
+                    Files.Add(file);
                 }
             }
             catch (Exception ex)

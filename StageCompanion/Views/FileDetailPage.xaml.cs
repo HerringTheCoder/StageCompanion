@@ -14,10 +14,10 @@ namespace StageCompanion.Views
             BindingContext = _fileDetailViewModel = new FileDetailViewModel();
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            _fileDetailViewModel.LoadFile();
+            await _fileDetailViewModel.LoadFile();
         }
     }
 }

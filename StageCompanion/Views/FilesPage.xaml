@@ -4,11 +4,11 @@
              x:Class="StageCompanion.Views.FilesPage"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:StageCompanion.ViewModels"  
-             xmlns:model="clr-namespace:StageCompanion.Models"  
+             xmlns:model="clr-namespace:StageCompanion.Models"
+             Style="{DynamicResource BaseContentPage}"
              x:Name="BrowseFilesPage">
-
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Command="{Binding AddFileCommand}" />
+        <ToolbarItem Text="&#x2795;" Command="{Binding AddFileCommand}" />
     </ContentPage.ToolbarItems>
     <!--
       x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
@@ -20,23 +20,28 @@
                 SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10" x:DataType="model:File">
-                        <Label Text="{Binding Name}" 
-                            LineBreakMode="NoWrap" 
-                            Style="{DynamicResource ListItemTextStyle}" 
-                            FontSize="16" />
-                        <Label Text="{Binding Extension}" 
-                            LineBreakMode="NoWrap"
-                            Style="{DynamicResource ListItemDetailTextStyle}"
-                            FontSize="13" />
-                        <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer 
+                    <Frame Style="{DynamicResource DataTemplateFrame}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="6*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" Source="{Binding FileIcon}" x:DataType="model:File"/>
+                            <StackLayout Grid.Column="1" Style ="{DynamicResource DataTemplateItem}" Padding="10" x:DataType="model:File">
+                                <Label Text="{Binding Name}" 
+                                   Style="{DynamicResource ListItemTextStyle}"/>
+                                <Label Text="{Binding Extension}" 
+                               Style="{DynamicResource ListItemDetailTextStyle}"/>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer 
                                 NumberOfTapsRequired="1"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type local:FilesViewModel}}, Path=FileTapped}"		
                                 CommandParameter="{Binding .}">
-                            </TapGestureRecognizer>
-                        </StackLayout.GestureRecognizers>
-                    </StackLayout>
+                                    </TapGestureRecognizer>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
