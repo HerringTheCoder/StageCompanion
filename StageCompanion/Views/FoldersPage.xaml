@@ -21,14 +21,18 @@
                 SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Style="{DynamicResource DataTemplateFrame}">
-                        <Grid>
+                    <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="6*"/>
+                                <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0" Source="folder_icon.png"/>
-                            <StackLayout Grid.Column="1" Style="{DynamicResource DataTemplateItem}" Padding="10" x:DataType="model:Folder">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="8*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                            <Image Grid.Column="0" Grid.Row="0" Source="folder_icon.png" Margin="8"/>
+                            <StackLayout Grid.Column="1" Grid.Row="0" Style="{DynamicResource DataTemplateItem}" Padding="10" x:DataType="model:Folder">
                                 <Label Text="{Binding Name}" 
                                        Style="{DynamicResource ListItemTextStyle}" />
                                 <Label Text="{Binding Name}" 
@@ -41,8 +45,14 @@
                                     </TapGestureRecognizer>
                                 </StackLayout.GestureRecognizers>
                             </StackLayout>
-                        </Grid>
-                    </Frame>
+
+                            <!-- Separator -->
+                            <BoxView Style="{DynamicResource DataTemplateSeparator}"
+                                     VerticalOptions="End"
+                                     Grid.ColumnSpan="2"
+                                     Grid.Row="1"
+                            />
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

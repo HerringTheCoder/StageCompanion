@@ -18,13 +18,15 @@
         <CollectionView x:Name="FilesListView"
                 ItemsSource="{Binding Files}"
                 SelectionMode="None">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="2"></GridItemsLayout>
+            </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Style="{DynamicResource DataTemplateFrame}">
-                        <Grid>
+                    <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="6*"/>
+                                <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
                             <Image Grid.Column="0" Source="{Binding FileIcon}" x:DataType="model:File"/>
                             <StackLayout Grid.Column="1" Style ="{DynamicResource DataTemplateItem}" Padding="10" x:DataType="model:File">
@@ -41,7 +43,6 @@
                                 </StackLayout.GestureRecognizers>
                             </StackLayout>
                         </Grid>
-                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
