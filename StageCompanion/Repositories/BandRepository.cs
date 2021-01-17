@@ -23,5 +23,15 @@ namespace StageCompanion.Repositories
 
             return await Task.FromResult(new List<Band>());
         }
+
+        public async Task<bool> LeaveBandAsync(string bandId, string userId)      
+        {
+            string path = $"bands/{bandId}/leave/{userId}";
+            var response = await HttpService.SendRequestAsync(HttpMethod.Get, path);
+            string message = await response.Content.ReadAsStringAsync();
+
+            return await Task.FromResult(response.IsSuccessStatusCode);
+        
+        }
     }
 }

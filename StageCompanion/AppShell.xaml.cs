@@ -11,8 +11,7 @@ namespace StageCompanion
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(FilesPage), typeof(FilesPage));
-            Routing.RegisterRoute(nameof(FileDetailPage), typeof(FileDetailPage));
-            Routing.RegisterRoute(nameof(NewFolderPage), typeof(NewFolderPage));
+            Routing.RegisterRoute(nameof(FileDetailPage), typeof(FileDetailPage));         
             Routing.RegisterRoute(nameof(NewBandPage), typeof(NewBandPage));
             Routing.RegisterRoute(nameof(BandPage), typeof(BandPage));
             Routing.RegisterRoute(nameof(NewInvitationPage), typeof(NewInvitationPage));

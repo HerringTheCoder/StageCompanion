@@ -13,6 +13,8 @@
                 <Image Source="main_logo.png" VerticalOptions="FillAndExpand"/>
                 <Label Text="Email"/>
                 <Entry x:Name="EmailEntry" Text="{Binding Path=Credentials.Email}" Placeholder="Your email"/>
+                <Label Text="Name"/>
+                <Entry x:Name="NameEntry" Text="{Binding Path=Credentials.Name}" Placeholder="Your name"/>
                 <Label Text="Password"/>
                 <Entry x:Name="PasswordEntry" IsPassword="True" Text="{Binding Path=Credentials.Password}" Placeholder="Your Password"/>
                 <Entry x:Name="PasswordConfirmationEntry" IsPassword="True" Text="{Binding Path=Credentials.PasswordConfirmation}" Placeholder="Password confirmation"/>

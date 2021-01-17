@@ -31,7 +31,7 @@ namespace StageCompanion.ViewModels.Auth
                 bool loginSuccessful = await AuthService.Login(Credentials);
                 if (loginSuccessful)
                 {
-                    await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
+                    await Shell.Current.GoToAsync($"//{nameof(FoldersPage)}");
                 }
                 else
                 {

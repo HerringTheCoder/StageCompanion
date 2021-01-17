@@ -69,7 +69,11 @@ namespace StageCompanion.ViewModels
                     Role = _role
                 };
 
-                await _invitationRepository.RequestNewAsync(invitation);
+                bool isSuccessful = await _invitationRepository.RequestNewAsync(invitation);
+                if (!isSuccessful)
+                {
+                    var task = Shell.Current.DisplayAlert("Error", "Fetching invitations failed. Check your internet connection and try again.", "Ok");
+                }
                 IsBusy = false;
             }
             catch (Exception ex)

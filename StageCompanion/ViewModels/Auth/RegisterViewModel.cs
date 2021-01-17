@@ -37,7 +37,7 @@ namespace StageCompanion.ViewModels.Auth
                 };
                 if (await AuthService.Login(Credentials))
                 {
-                    await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
+                    await Shell.Current.GoToAsync($"//{nameof(FoldersPage)}");
                 }
                 else
                 {

@@ -24,7 +24,7 @@
                                     <SwipeItem Text="Delete" 
                                            BackgroundColor="Red"
                                            IconImageSource="bin_icon.png"
-                                           Command="{Binding Source={x:Reference MembersListView}, Path=BindingContext.DeleteMemberCommand}"
+                                           Command="{Binding Source={x:Reference MembersListView}, Path=BindingContext.LeaveBandCommand}"
                                            CommandParameter = "{Binding .}"
                                 >
                                     </SwipeItem>

@@ -22,6 +22,7 @@ namespace StageCompanion.ViewModels
         public ObservableCollection<User> Members { get; }
         public Command AddInvitationCommand { get; }
         public Command AddBandFileCommand { get; }
+        public Command LeaveBandCommand { get; }
 
         public BandViewModel()
         {
@@ -30,6 +31,7 @@ namespace StageCompanion.ViewModels
             _fileService = DependencyService.Get<IFileService>();
             AddInvitationCommand = new Command(OnAddInvitation, CanExecute);
             AddBandFileCommand = new Command<User>(OnAddBandFile);
+            LeaveBandCommand = new Command<User>(OnLeaveBand);
         }
 
         private bool _isOwner;
@@ -93,7 +95,7 @@ namespace StageCompanion.ViewModels
                     bool isSuccesful = await _fileService.SendBandFile(Convert.ToInt32(BandId), user.Id, stream, result);
                     if (!isSuccesful)
                     {
-                        var task = Shell.Current.DisplayAlert("Error", "File upload unsuccesful", "Cancel");
+                        await Shell.Current.DisplayAlert("Error", "File upload unsuccesful", "Cancel");
                     }
                 }
             }
@@ -101,7 +103,27 @@ namespace StageCompanion.ViewModels
             {
                 Debug.WriteLine(ex.Message);
             }
+        }
 
+        private async void OnLeaveBand(User user)
+        {
+            try
+            {
+                bool isSuccessful = await _bandRepository.LeaveBandAsync(BandId, user.Id);
+                if (!isSuccessful)
+                {
+                    await Shell.Current.DisplayAlert("Error", "User detach unsuccessful. Try again later.", "Ok");
+                }
+                else
+                {
+                    await Shell.Current.GoToAsync("..");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                await Shell.Current.DisplayAlert("Error", "User detach unsuccessful. Try again later.", "Ok");
+            }
         }
     }
 }

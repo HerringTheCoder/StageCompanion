@@ -101,8 +101,13 @@ namespace StageCompanion.ViewModels
         {
             if (folder == null)
                 return;
-            await _folderRepository.DeleteAsync(folder.Id.ToString());
-            await ExecuteLoadFoldersCommand();
+
+            bool answer = await Shell.Current.DisplayAlert("Deleting folder", "Are you sure you want to delete folder? This will remove all contained files.", "Yes", "No");
+            if (answer == true)
+            {
+                await _folderRepository.DeleteAsync(folder.Id.ToString());
+                await ExecuteLoadFoldersCommand();
+            }
         }
 
         async void OnFolderSelected(Folder folder)

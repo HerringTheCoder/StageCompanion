@@ -95,8 +95,19 @@ namespace StageCompanion.ViewModels
         {
             if (band == null)
                 return;
-            await _bandRepository.DeleteAsync(band.Id.ToString());
-            await ExecuteLoadBandsCommand();
+            bool answer = await Shell.Current.DisplayAlert("Deleting band", "Are you sure you want to delete band? This cannot be reverted.", "Yes", "No");
+            if (answer == true)
+            {
+                bool isSuccessful = await _bandRepository.DeleteAsync(band.Id.ToString());
+                if (isSuccessful)
+                {
+                    OnAppearing();
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Error", "Deleting band failed. Please try again later.", "Ok");
+                }
+            }
         }
 
         async void OnBandSelected(Band band)

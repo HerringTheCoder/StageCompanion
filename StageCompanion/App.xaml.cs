@@ -34,7 +34,7 @@ namespace StageCompanion
         protected override async void OnStart()
         {
             if (await CheckAuthorizationState())
-                await Shell.Current.GoToAsync($"///{nameof(AboutPage)}");
+                await Shell.Current.GoToAsync($"///{nameof(FoldersPage)}");
         }
 
         protected override async void OnResume()

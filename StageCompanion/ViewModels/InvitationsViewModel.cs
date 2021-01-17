@@ -1,5 +1,6 @@
 ﻿using StageCompanion.Models;
 using StageCompanion.Repositories.Interfaces;
+using StageCompanion.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -41,7 +42,7 @@ namespace StageCompanion.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                Debug.WriteLine(ex);               
             }
             finally
             {
@@ -58,7 +59,15 @@ namespace StageCompanion.ViewModels
         {
             if (invitation == null)
                 return;
-            await _invitationRepository.AcceptInvitationAsync(invitation);            
+            var isSuccessful = await _invitationRepository.AcceptInvitationAsync(invitation);
+            if (!isSuccessful)
+            {
+                var task = Shell.Current.DisplayAlert("Error", "Accepting invitation failed. Try again later.", "Ok");
+            }
+            else
+            {
+                await Shell.Current.GoToAsync($"{nameof(BandPage)}?{nameof(BandViewModel.BandId)}={invitation.BandId}");
+            }
 
         }
 
@@ -66,7 +75,11 @@ namespace StageCompanion.ViewModels
         {
             if (invitation == null)
                 return;
-            await _invitationRepository.DeleteAsync(invitation.Id.ToString());          
+            var isSuccessful = await _invitationRepository.DeleteAsync(invitation.Id.ToString());
+            if (!isSuccessful)
+            {
+                var task = Shell.Current.DisplayAlert("Error", "Removing invitation failed. Try again later.", "Ok");
+            }
         }
     }
 }
