@@ -1,5 +1,4 @@
-﻿using Android.Media;
-using StageCompanion.Models;
+﻿using StageCompanion.Models;
 using StageCompanion.Repositories.Interfaces;
 
 namespace StageCompanion.Repositories

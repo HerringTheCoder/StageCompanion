@@ -1,24 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
              x:Class="StageCompanion.Views.RegisterPage"
-             Shell.NavBarIsVisible="False"
-             Style="{DynamicResource BaseContentPage}">
+             Style="{DynamicResource BaseContentPage}"
+             Shell.NavBarIsVisible="False">
     <ContentPage.Content>
-        <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
-            <ContentView  VerticalOptions="FillAndExpand">
-                <Image Source="main_logo.png"/>
-            </ContentView>
-
-            <Label Text="Email"/>
-            <Entry x:Name="EmailEntry" Text="{Binding Path=Credentials.Email}" Placeholder="Your email"/>
-            <Label Text="Password"/>
-            <Entry x:Name="PasswordEntry" IsPassword="True" Text="{Binding Path=Credentials.Password}" Placeholder="Your Password"/>
-            <Entry x:Name="PasswordConfirmationEntry" IsPassword="True" Text="{Binding Path=Credentials.PasswordConfirmation}" Placeholder="Password confirmation"/>
-            <Button VerticalOptions="Center" Text="Register" Command="{Binding RegisterCommand}"/>
-            <Button VerticalOptions="Center" Text="Back to Login" Command="{Binding LoginCommand}"/>
-            <ActivityIndicator Color="Orange" IsRunning="{Binding IsBusy}"/>
-            <Label Text="{Binding Path=Response.Message}" TextColor="{Binding Path=Response.ColorName}" FontSize="Large" HorizontalTextAlignment="Center"/>
-        </StackLayout>
+        <ScrollView>
+            <StackLayout VerticalOptions="Center" Padding="100,100,100,100" >
+                <Image Source="main_logo.png" VerticalOptions="FillAndExpand"/>
+                <Label Text="Email"/>
+                <Entry x:Name="EmailEntry" Text="{Binding Path=Credentials.Email}" Placeholder="Your email"/>
+                <Label Text="Password"/>
+                <Entry x:Name="PasswordEntry" IsPassword="True" Text="{Binding Path=Credentials.Password}" Placeholder="Your Password"/>
+                <Entry x:Name="PasswordConfirmationEntry" IsPassword="True" Text="{Binding Path=Credentials.PasswordConfirmation}" Placeholder="Password confirmation"/>
+                <Button VerticalOptions="Center" Text="Register" Command="{Binding RegisterCommand}"/>
+                <Button VerticalOptions="Center" Text="Back to Login" Command="{Binding LoginCommand}"/>
+                <ActivityIndicator Color="Orange" IsRunning="{Binding IsBusy}"/>
+                <Label Text="{Binding Path=Response.Message}" TextColor="{Binding Path=Response.ColorName}" FontSize="Large" HorizontalTextAlignment="Center"/>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using StageCompanion.ViewModels;
+using StageCompanion.ViewModels.Auth;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 

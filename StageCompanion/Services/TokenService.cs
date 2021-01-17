@@ -38,7 +38,7 @@ namespace StageCompanion.Services
         {           
             await SecureStorage.SetAsync("token", token);
             await SecureStorage.SetAsync("password", credentials.Password);
-            await SecureStorage.SetAsync("email", credentials.Password);
+            await SecureStorage.SetAsync("email", credentials.Email);
             DateTime expiredAt = DateTimeOffset.FromUnixTimeSeconds((long)jwt.Payload.Exp).UtcDateTime;
             await SecureStorage.SetAsync("expiredAt", expiredAt.ToString());
         }
@@ -49,7 +49,7 @@ namespace StageCompanion.Services
             if (!string.IsNullOrEmpty(expiredAt))
             {
                 DateTime expiredAtTime = DateTime.Parse(expiredAt);
-                if (expiredAtTime > DateTime.UtcNow)
+                if (expiredAtTime > DateTime.UtcNow.AddSeconds(15))
                     return true;
                 else
                     return await AuthService.LoginFromStorage();

@@ -10,7 +10,7 @@ using Xamarin.Forms;
 
 namespace StageCompanion.Repositories
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : BaseDataModel, new()
+    public abstract class BaseRepository<T> : IBaseRepository<T> where T : BaseDataModel, new()
     {
         protected IHttpService HttpService => DependencyService.Get<IHttpService>();
 
@@ -19,12 +19,9 @@ namespace StageCompanion.Repositories
             string path = "/" + typeof(T).Name.Pluralize().Transform(To.LowerCase);
             string json = JsonConvert.SerializeObject(item);
             var response = await HttpService.SendRequestAsync(HttpMethod.Post, path, json);
-            if (response.IsSuccessStatusCode)
-            {
-                return await Task.FromResult(true);
-            }
-            string responseMessage = await response.Content.ReadAsStringAsync();
-            return await Task.FromResult(false);
+            string message = await response.Content.ReadAsStringAsync();
+
+            return await Task.FromResult(response.IsSuccessStatusCode);
         }
 
         public virtual async Task<bool> UpdateAsync(T item)
@@ -32,18 +29,16 @@ namespace StageCompanion.Repositories
             string path = "/" + typeof(T).Name.Pluralize().Transform(To.LowerCase);
             string json = JsonConvert.SerializeObject(item);
             var response = await HttpService.SendRequestAsync(HttpMethod.Put, path, json);
-            if (response.IsSuccessStatusCode)
-            {
-                return await Task.FromResult(true);
-            }
+            string message = await response.Content.ReadAsStringAsync();
 
-            return await Task.FromResult(false);
+            return await Task.FromResult(response.IsSuccessStatusCode);
         }
 
         public virtual async Task<bool> DeleteAsync(string id)
         {
             string path = "/" + typeof(T).Name.Pluralize().Transform(To.LowerCase) + $"/{id}";
             var response = await HttpService.SendRequestAsync(HttpMethod.Delete, path);
+            string message = await response.Content.ReadAsStringAsync();
 
             return await Task.FromResult(response.IsSuccessStatusCode);
         }
@@ -52,9 +47,9 @@ namespace StageCompanion.Repositories
         {
             string path = "/" + typeof(T).Name.Pluralize().Transform(To.LowerCase) + $"/{id}";
             var response = await HttpService.SendRequestAsync(HttpMethod.Get, path);
+            string responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                string responseContent = await response.Content.ReadAsStringAsync();
                 T item = JsonConvert.DeserializeObject<T>(responseContent);
                 return await Task.FromResult(item);
             }
@@ -66,9 +61,9 @@ namespace StageCompanion.Repositories
         {
             string path = "/" + typeof(T).Name.Pluralize().Transform(To.LowerCase);
             var response = await HttpService.SendRequestAsync(HttpMethod.Get, path);
+            string responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                string responseContent = await response.Content.ReadAsStringAsync();
                 List<T> items = JsonConvert.DeserializeObject<List<T>>(responseContent);
                 return await Task.FromResult(items);
             }

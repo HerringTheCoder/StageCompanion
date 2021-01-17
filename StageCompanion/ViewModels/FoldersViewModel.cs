@@ -2,41 +2,44 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Xamarin.Forms;
-
+using System.Windows.Input;
 using StageCompanion.Models;
 using StageCompanion.Repositories.Interfaces;
 using StageCompanion.Views;
+using Xamarin.Forms;
 
 namespace StageCompanion.ViewModels
 {
     public class FoldersViewModel : BaseViewModel
     {
-        private Folder _selectedFolder;
         private readonly IFolderRepository _folderRepository = DependencyService.Get<IFolderRepository>();
 
         public ObservableCollection<Folder> Folders { get; }
-        public Command LoadFoldersCommand { get; }
-        public Command AddFolderCommand { get; }
-        public Command<Folder> FolderTapped { get; }
+        public ICommand LoadFoldersCommand { get; }
+        public ICommand AddFolderCommand { get; }
+        public ICommand DeleteFolderCommand { get; }
 
         public FoldersViewModel()
         {
             Title = "Your folders";
             Folders = new ObservableCollection<Folder>();
             LoadFoldersCommand = new Command(async () => await ExecuteLoadFoldersCommand());
-            FolderTapped = new Command<Folder>(OnFolderSelected);
             AddFolderCommand = new Command(OnAddFolder);
+            DeleteFolderCommand = new Command<Folder>(OnDeleteFolder);
         }
 
         private async Task ExecuteLoadFoldersCommand()
         {
             IsBusy = true;
-
             try
             {
                 Folders.Clear();
                 var folders = await _folderRepository.GetAllAsync();
+                foreach (var folder in folders)
+                {
+                    Folders.Add(folder);
+                }
+                Folders.Clear();
                 foreach (var folder in folders)
                 {
                     Folders.Add(folder);
@@ -58,26 +61,53 @@ namespace StageCompanion.ViewModels
             SelectedFolder = null;
         }
 
-
+        private Folder _selectedFolder;
         public Folder SelectedFolder
         {
             get => _selectedFolder;
             set
             {
                 _selectedFolder = value;
-                OnFolderSelected(_selectedFolder);
+                OnFolderSelected(value);
             }
         }
 
-        //TODO: Add NewFolder functionality
         private async void OnAddFolder(object obj)
         {
-            await Shell.Current.GoToAsync(nameof(NewFilePage));
+            string folderName = await Shell.Current.DisplayPromptAsync("New folder", "Type in folder name");
+            if (!string.IsNullOrEmpty(folderName))
+            {
+                try
+                {
+                    var folder = new Folder
+                    {
+                        Name = folderName,
+                        OwnerId = App.CurrentUser.Id
+                    };
+
+                    await _folderRepository.AddAsync(folder);
+                    OnAppearing();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    await Shell.Current.DisplayAlert("Error,", "File upload failed. Please try again.", "Ok");
+                }
+            }
+            //await Shell.Current.GoToAsync($"/{nameof(NewFolderPage)}");
+        }
+
+        private async void OnDeleteFolder(Folder folder)
+        {
+            if (folder == null)
+                return;
+            await _folderRepository.DeleteAsync(folder.Id.ToString());
+            await ExecuteLoadFoldersCommand();
         }
 
         async void OnFolderSelected(Folder folder)
         {
-            if (folder== null)
+            if (folder == null)
                 return;
 
             // This will push the FilesPage onto the navigation stack

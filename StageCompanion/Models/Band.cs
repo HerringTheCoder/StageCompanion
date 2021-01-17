@@ -7,7 +7,7 @@ namespace StageCompanion.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string LeaderId { get; set; }
-        public User Leader { get; set; }
-        public List<BandUser> BandUsers { get; set; }
+        public BandUser BandUsers { get; set; }
+        public List<User> Users { get; set; }
     }
 }

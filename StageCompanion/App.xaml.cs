@@ -8,6 +8,7 @@ using StageCompanion.Views;
 using System.Diagnostics;
 using StageCompanion.Repositories;
 using StageCompanion.Repositories.Interfaces;
+using Xamarin.Essentials;
 
 namespace StageCompanion
 {
@@ -17,42 +18,45 @@ namespace StageCompanion
 
         public App()
         {
-            Device.SetFlags(new string[] { "Brush_Experimental" });
+            Device.SetFlags(new[] { "Brush_Experimental", "SwipeView_Experimental" });
             InitializeComponent();
-            DependencyService.Register<MockDataStore>();
             DependencyService.Register<IHttpService, HttpService>();
             DependencyService.Register<IAuthService, AuthService>();
             DependencyService.Register<ITokenService, TokenService>();
             DependencyService.Register<IFileService, FileService>();
             DependencyService.Register<IFileRepository, FileRepository>();
             DependencyService.Register<IFolderRepository, FolderRepository>();
+            DependencyService.Register<IBandRepository, BandRepository>();
+            DependencyService.Register<IInvitationRepository, InvitationRepository>();
             MainPage = new AppShell();
         }
 
         protected override async void OnStart()
         {
-            if (await CheckAuthorization())
-                await Shell.Current.GoToAsync($"///{nameof(FoldersPage)}");
-            else
-                await Shell.Current.GoToAsync($"///{nameof(LoginPage)}");
+            if (await CheckAuthorizationState())
+                await Shell.Current.GoToAsync($"///{nameof(AboutPage)}");
         }
 
         protected override async void OnResume()
         {
-            await CheckAuthorization();
+            if (!await CheckAuthorizationState())
+                await Shell.Current.GoToAsync($"///{nameof(LoginPage)}");
         }
 
         protected override void OnSleep()
         {
         }
 
-        private async Task<bool> CheckAuthorization()
+        public static async Task<bool> CheckAuthorizationState()
         {
-            var TokenService = DependencyService.Get<ITokenService>();
+            var tokenService = DependencyService.Get<ITokenService>();
             bool isValidated = false;
             try
             {
-                isValidated = await TokenService.ValidateToken();
+                isValidated = await tokenService.ValidateToken();
+                string token = await SecureStorage.GetAsync("token");
+                CurrentUser = tokenService.GetUserFromToken(token);
+                return true;
             }
             catch (Exception ex)
             {

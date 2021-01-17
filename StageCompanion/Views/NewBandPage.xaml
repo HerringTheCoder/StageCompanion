@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="StageCompanion.Views.NewBandPage"
+             Style="{DynamicResource BaseContentPage}">
+    <ContentPage.Content>
+        <StackLayout Spacing="3" Padding="100">
+            <Label Text="Your band name" FontSize="Medium" Style="{DynamicResource ListItemTextStyle}"/>
+            <Entry Text="{Binding Name, Mode=TwoWay}" FontSize="Medium"/>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"/>
+                <Button Text="Add" Command="{Binding AddBandCommand}" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

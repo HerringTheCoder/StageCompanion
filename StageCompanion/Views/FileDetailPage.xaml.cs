@@ -6,7 +6,7 @@ namespace StageCompanion.Views
 {
     public partial class FileDetailPage : ContentPage
     {
-        private FileDetailViewModel _fileDetailViewModel;
+        private readonly FileDetailViewModel _fileDetailViewModel;
 
         public FileDetailPage()
         {

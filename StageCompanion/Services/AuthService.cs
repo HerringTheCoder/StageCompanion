@@ -19,7 +19,7 @@ namespace StageCompanion.Services
         public async Task<bool> Login(Credentials credentials)
         {
             string json = JsonConvert.SerializeObject(credentials);
-            var response = await HttpService.SendRequestAsync(HttpMethod.Post, "/auth/login", json);
+            var response = await HttpService.SendRequestAsync(HttpMethod.Post, "/auth/login", json, false);
             if (response.IsSuccessStatusCode)
             {
                 string token = await TokenService.GetTokenValueAsync(response);
@@ -28,7 +28,7 @@ namespace StageCompanion.Services
                 App.CurrentUser = JsonConvert.DeserializeObject<User>(jwt.Subject);
                 return true;
             }
-            else if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == (HttpStatusCode)422)
+            if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == (HttpStatusCode)422)
             {
                 string content = await response.Content.ReadAsStringAsync();
                 var errors = JsonConvert.DeserializeObject<AuthorizationErrorResponse>(content);
@@ -46,7 +46,7 @@ namespace StageCompanion.Services
                 throw new Exception("Provided passwords do not match!");
             }
             string json = JsonConvert.SerializeObject(credentials);
-            var response = await HttpService.SendRequestAsync(HttpMethod.Post, "/auth/register", json);
+            var response = await HttpService.SendRequestAsync(HttpMethod.Post, "/auth/register", json, false);
             string content = await response.Content.ReadAsStringAsync();
 
             if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == (HttpStatusCode)422)

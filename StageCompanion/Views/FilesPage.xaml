@@ -6,7 +6,9 @@
              xmlns:local="clr-namespace:StageCompanion.ViewModels"  
              xmlns:model="clr-namespace:StageCompanion.Models"
              Style="{DynamicResource BaseContentPage}"
-             x:Name="BrowseFilesPage">
+             x:Name="BrowseFilesPage"
+             >
+
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="&#x2795;" Command="{Binding AddFileCommand}" />
     </ContentPage.ToolbarItems>
@@ -17,32 +19,28 @@
     <RefreshView x:DataType="local:FilesViewModel" Command="{Binding LoadFilesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
         <CollectionView x:Name="FilesListView"
                 ItemsSource="{Binding Files}"
-                SelectionMode="None">
+                SelectionMode="Single"
+                SelectedItem="{Binding SelectedFile}">
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="2"></GridItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="2" HorizontalItemSpacing="2"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
+                    <Frame Style="{DynamicResource CollectionItemFrameRectangular}">
                     <Grid>
-                            <Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="8*"/>
+                                <ColumnDefinition Width="5*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0" Source="{Binding FileIcon}" x:DataType="model:File"/>
+                        <Image Grid.Column="0" Source="{Binding FileIcon}" x:DataType="model:File"/>
                             <StackLayout Grid.Column="1" Style ="{DynamicResource DataTemplateItem}" Padding="10" x:DataType="model:File">
                                 <Label Text="{Binding Name}" 
-                                   Style="{DynamicResource ListItemTextStyle}"/>
+                                   Style="{DynamicResource ListItemTextStyle}" HorizontalOptions="Center"/>
                                 <Label Text="{Binding Extension}" 
-                               Style="{DynamicResource ListItemDetailTextStyle}"/>
-                                <StackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer 
-                                NumberOfTapsRequired="1"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:FilesViewModel}}, Path=FileTapped}"		
-                                CommandParameter="{Binding .}">
-                                    </TapGestureRecognizer>
-                                </StackLayout.GestureRecognizers>
+                               Style="{DynamicResource ListItemDetailTextStyle}" HorizontalOptions="Center"/>
                             </StackLayout>
-                        </Grid>
+                    </Grid>
+                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

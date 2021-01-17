@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:StageCompanion.Models;assembly=StageCompanion"
+             x:Class="StageCompanion.Views.BandPage"
+             Title="{Binding Title}"
+             Style="{DynamicResource BaseContentPage}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Invite new member &#x2795;" Command="{Binding AddInvitationCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame Background="background.jpg" Style="{DynamicResource CollectionItemFrameRounded}">
+                <Label FontSize="Title" FontFamily="sans-serif-light"  Text="{Binding Name}" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Frame>
+            <CollectionView x:Name="MembersListView"
+                ItemsSource="{Binding Members}"
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:Name="MemberTemplate">
+                        <SwipeView Style="{StaticResource SwipeViewDefault}">
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Delete" 
+                                           BackgroundColor="Red"
+                                           IconImageSource="bin_icon.png"
+                                           Command="{Binding Source={x:Reference MembersListView}, Path=BindingContext.DeleteMemberCommand}"
+                                           CommandParameter = "{Binding .}"
+                                >
+                                    </SwipeItem>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <Frame Style="{DynamicResource CollectionItemFrameRounded}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="8*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="8*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Image Grid.Column="0" Grid.Row="0" Source="user_icon.png" Margin="8" HeightRequest="64" WidthRequest="64"/>
+                                    <StackLayout Grid.Column="1" Grid.Row="0" Style="{DynamicResource DataTemplateItem}" Padding="10" x:DataType="models:User">
+                                        <Label Text="{Binding Email}" 
+                                       Style="{DynamicResource ListItemTextStyle}" />
+                                        <Label Text="{Binding Name}" 
+                                           Style="{DynamicResource ListItemTextStyle}" />
+                                    </StackLayout>
+                                    <Button Text="Share file" BackgroundColor="Green" Grid.Column="2" 
+                                            Command="{Binding Source={x:Reference MembersListView}, Path=BindingContext.AddBandFileCommand}"
+                                           CommandParameter = "{Binding .}"
+                                            IsVisible="{Binding Source={x:Reference MembersListView}, Path=BindingContext.IsOwner}"/>
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

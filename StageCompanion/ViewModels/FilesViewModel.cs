@@ -2,9 +2,11 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using StageCompanion.Interfaces;
 using StageCompanion.Models;
 using StageCompanion.Repositories.Interfaces;
 using StageCompanion.Views;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace StageCompanion.ViewModels
@@ -12,8 +14,8 @@ namespace StageCompanion.ViewModels
     [QueryProperty(nameof(FolderId), nameof(FolderId))]
     public class FilesViewModel : BaseViewModel
     {
-        private File _selectedFile;
         private readonly IFileRepository _fileRepository = DependencyService.Get<IFileRepository>();
+        private readonly IFileService _fileService = DependencyService.Get<IFileService>();
         public string FolderId { get; set; }
         public ObservableCollection<File> Files { get; }
         public Command LoadFilesCommand { get; }
@@ -26,7 +28,7 @@ namespace StageCompanion.ViewModels
             Files = new ObservableCollection<File>();
             LoadFilesCommand = new Command(async () => await ExecuteLoadFilesCommand());
             FileTapped = new Command<File>(OnFileSelected);
-            AddFileCommand = new Command(OnAddFolder);
+            AddFileCommand = new Command(OnAddFile);
         }
 
         private async Task ExecuteLoadFilesCommand()
@@ -62,7 +64,7 @@ namespace StageCompanion.ViewModels
             SelectedFile = null;
         }
 
-
+        private File _selectedFile;
         public File SelectedFile
         {
             get => _selectedFile;
@@ -73,9 +75,23 @@ namespace StageCompanion.ViewModels
             }
         }
 
-        private async void OnAddFolder(object obj)
+        private async void OnAddFile(object obj)
         {
-            await Shell.Current.GoToAsync(nameof(NewFilePage));
+            try
+            {
+                var result = await FilePicker.PickAsync();
+                if (result != null)
+                {
+                    var stream = await result.OpenReadAsync();
+                    await _fileService.SendFile(Convert.ToInt32(FolderId), stream, result);
+                    OnAppearing();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                await Shell.Current.DisplayAlert("Error,", "File upload failed. Please try again.", "Ok");
+            }
         }
 
         async void OnFileSelected(File file)

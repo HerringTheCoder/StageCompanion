@@ -5,6 +5,6 @@ namespace StageCompanion.Interfaces
 {
     public interface IHttpService
     {
-        Task<HttpResponseMessage> SendRequestAsync(HttpMethod method, string path, string json = "");
+        Task<HttpResponseMessage> SendRequestAsync(HttpMethod method, string path, string json = "", bool useAuthorization = true);
     }
 }

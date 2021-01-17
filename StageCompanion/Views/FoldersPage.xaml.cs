@@ -1,33 +1,26 @@
-﻿using System;
-using System.ComponentModel;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
-using StageCompanion.Models;
-using StageCompanion.Views;
+﻿using Xamarin.Forms;
 using StageCompanion.ViewModels;
+using Xamarin.Forms.Xaml;
+using System.Diagnostics;
 
 namespace StageCompanion.Views
 {
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class FoldersPage : ContentPage
     {
-        FoldersViewModel _foldersViewModel;
+        private readonly FoldersViewModel _foldersViewModel;
 
         public FoldersPage()
-        {
+        {     
             InitializeComponent();
-
-            BindingContext = _foldersViewModel = new FoldersViewModel();
+            _foldersViewModel = new FoldersViewModel();
+            BindingContext = _foldersViewModel;
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
             _foldersViewModel.OnAppearing();
-        }
+        }       
     }
 }

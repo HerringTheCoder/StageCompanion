@@ -15,12 +15,12 @@
         <ResourceDictionary>
             <Style x:Key="BaseStyle" TargetType="Element">
                 <Setter Property="Shell.BackgroundColor" Value="{StaticResource PrimaryColor}" />
-                <Setter Property="Shell.ForegroundColor" Value="White" />
+                <Setter Property="Shell.ForegroundColor" Value="{StaticResource MainBackgroundColor}" />
                 <Setter Property="Shell.TitleColor" Value="White" />
                 <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
                 <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
                 <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource PrimaryColor}" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
+                <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource MainBackgroundColor}"/>
                 <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
                 <Setter Property="Shell.TabBarTitleColor" Value="White"/>
             </Style>
@@ -33,6 +33,7 @@
             -->
             <Style Class="FlyoutItemLabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="White"></Setter>
+                <Setter Property="FontSize" Value="Medium"></Setter>
             </Style>
             <Style Class="FlyoutItemLayoutStyle" TargetType="Layout" ApplyToDerivedTypes="True">
                 <Setter Property="BackgroundColor" Value="LightBlue"></Setter>
@@ -78,13 +79,7 @@
         <DataTemplate>
             <Grid>
                 <Grid.Background>
-                    <RadialGradientBrush Center="0.5,0.5"
-                                         Radius="1.2">
-                        <GradientStop Color="{StaticResource PrimaryColor}"
-                                      Offset="0.1"/>
-                        <GradientStop Color="{StaticResource SecondaryColor}"
-                                      Offset="1.0"/>
-                    </RadialGradientBrush>
+                    <SolidColorBrush Color="Orange"/>
                 </Grid.Background>
                 <Image Source="main_logo.png" Margin="0,0,50,0"/>
             </Grid>
@@ -96,8 +91,10 @@
         https://docs.microsoft.com/dotnet/api/xamarin.forms.shellgroupitem.flyoutdisplayoptions?view=xamarin-forms
     -->
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
-        <ShellContent Title="About" Icon="tab_about.png" Route="AboutPage" ContentTemplate="{DataTemplate local:AboutPage}" />
-        <ShellContent Title="Library" Icon="tab_feed.png" Route="FoldersPage" ContentTemplate="{DataTemplate local:FoldersPage}" />
+        <ShellContent Title="About" Icon="tab_about.png" Route="AboutPage" ContentTemplate="{DataTemplate local:AboutPage}"/>
+        <ShellContent Title="Library" Icon="tab_feed.png" Route="FoldersPage" ContentTemplate="{DataTemplate local:FoldersPage}"/>
+        <ShellContent Title="Bands" Icon="tab_feed.png" Route="BandsPage" ContentTemplate="{DataTemplate local:BandsPage}"/>
+        <ShellContent Title="Invitations" Icon="tab_feed.png" Route="InvitationsPage" ContentTemplate="{DataTemplate local:InvitationsPage}"/>
     </FlyoutItem>
 
     <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->

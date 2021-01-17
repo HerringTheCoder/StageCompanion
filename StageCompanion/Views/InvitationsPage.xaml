@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:models="clr-namespace:StageCompanion.Models;assembly=StageCompanion"
+                xmlns:local="clr-namespace:StageCompanion.ViewModels;assembly=StageCompanion"
+             x:Class="StageCompanion.Views.InvitationsPage"
+            Style="{DynamicResource BaseContentPage}"
+            Title="{Binding Title}">
+    <ContentPage.Content>
+        <RefreshView x:DataType="local:InvitationsViewModel" Command="{Binding LoadInvitationsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+            <CollectionView x:Name="InvitationsListView"
+                ItemsSource="{Binding Invitations}"
+                SelectionMode="Single">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:Name="InvitationTemplate">
+                        <SwipeView x:Name="swipeView" Style="{StaticResource SwipeViewDefault}">
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Remove"
+                                           BackgroundColor="Red"
+                                           IconImageSource="bin_icon.png"
+                                           Command="{Binding Source={x:Reference InvitationsListView}, Path=BindingContext.DeleteInvitationCommand}"
+                                           CommandParameter = "{Binding .}"/>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <Frame x:Name="itemFrame" Style="{DynamicResource CollectionItemFrameRounded}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Image Grid.Column="0" 
+                                   Grid.Row="0" 
+                                   ScaleX="0.9"
+                                   Source="invitation_icon.png" 
+                                   HeightRequest="64" 
+                                   WidthRequest="64"/>
+                                    <StackLayout Grid.Column="1" Style="{DynamicResource DataTemplateItem}" x:DataType="models:Invitation">
+                                        <StackLayout Orientation="Horizontal" Grid.Row="0">
+                                            <Label Text="Band name: " Style="{DynamicResource ListItemTextStyle}"/>                                      
+                                            <Label Text="{Binding Band.Name}" Style="{DynamicResource ListItemTextStyle}" FontAttributes="Bold"/>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal" Grid.Row="1">
+                                            <Label Text="Your role: " Style="{DynamicResource ListItemTextStyle}"/>
+                                            <Label Text="{Binding Role}" Style="{DynamicResource ListItemTextStyle}" FontAttributes="Bold"/>
+                                        </StackLayout>
+                                        <Button Text="Join band" TextColor="GhostWhite" BackgroundColor="Green"
+                                                Command="{Binding Source={x:Reference InvitationsListView}, Path=BindingContext.AcceptInvitationCommand}"
+                                                CommandParameter = "{Binding .}"/>
+                                    </StackLayout>
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </ContentPage.Content>
+</ContentPage>

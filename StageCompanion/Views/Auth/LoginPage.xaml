@@ -4,16 +4,13 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             BackgroundColor="LightGray"             
              x:Class="StageCompanion.Views.LoginPage"
              Style="{DynamicResource BaseContentPage}"
              Shell.NavBarIsVisible="False">
     <ContentPage.Content>
-        <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
-            <ContentView  VerticalOptions="FillAndExpand">
-            <Image Source="main_logo.png"/>
-            </ContentView>
-            
+        <ScrollView>
+        <StackLayout VerticalOptions="Center" Padding="100,100,100,100">
+            <Image Source="main_logo.png"  VerticalOptions="FillAndExpand"/>
             <Label Text="Email"/>
             <Entry x:Name="EmailEntry" Text="{Binding Path=Credentials.Email}" Placeholder="Type in your email"/>
             <Label Text="Password"/>
@@ -23,5 +20,6 @@
             <ActivityIndicator Color="Orange" IsRunning="{Binding IsBusy}"/>
             <Label Text="{Binding Path=Response.Message}" TextColor="{Binding Path=Response.ColorName}" FontSize="Large" HorizontalTextAlignment="Center"/>
         </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

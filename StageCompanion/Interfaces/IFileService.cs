@@ -6,6 +6,7 @@ namespace StageCompanion.Interfaces
 {
     public interface IFileService
     {
-        Task SendFile(Stream stream, FileResult result);
+        Task<bool> SendFile(int folderId, Stream stream, FileResult result);
+        Task<bool> SendBandFile(int bandId, string userId, Stream stream, FileResult result);
     }
 }

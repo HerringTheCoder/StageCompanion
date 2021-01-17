@@ -12,7 +12,11 @@ namespace StageCompanion
             InitializeComponent();
             Routing.RegisterRoute(nameof(FilesPage), typeof(FilesPage));
             Routing.RegisterRoute(nameof(FileDetailPage), typeof(FileDetailPage));
-            Routing.RegisterRoute(nameof(NewFilePage), typeof(NewFilePage));
+            Routing.RegisterRoute(nameof(NewFolderPage), typeof(NewFolderPage));
+            Routing.RegisterRoute(nameof(NewBandPage), typeof(NewBandPage));
+            Routing.RegisterRoute(nameof(BandPage), typeof(BandPage));
+            Routing.RegisterRoute(nameof(NewInvitationPage), typeof(NewInvitationPage));
+            Routing.RegisterRoute(nameof(InvitationsPage), typeof(InvitationsPage));
         }
 
         private async void OnLogoutClicked(object sender, EventArgs e)

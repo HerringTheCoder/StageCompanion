@@ -8,25 +8,44 @@
     <Application.Resources>
         <ResourceDictionary>
             <!-- Color definitions -->
-            <Color x:Key="PrimaryColor">#4d1a99</Color>
+            <!-- Light theme -->
+            <Color x:Key="PrimaryColor">Black</Color>
             <Color x:Key="SecondaryColor">Black</Color>
-            <Color x:Key="MainBackgroundColor">White</Color>
-            <Color x:Key="SecondaryBackgroundColor">White</Color>
+            <Color x:Key="TertiaryColor">DimGray</Color>
+            <Color x:Key="MainBackgroundColor">#e6e3e3</Color>
             <Color x:Key="SeparatorColor">#66000000</Color>
+            <Color x:Key="ButtonTextColor">White</Color>
+            <Color x:Key="AlertColor">IndianRed</Color>
+
+            <!-- Dark theme -->
+            <Color x:Key="DarkPrimaryColor">#4d1a99</Color>
+            <Color x:Key="DarkSecondaryColor">White</Color>
+            <Color x:Key="DarkTertiaryColor">White</Color>
+            <Color x:Key="DarkMainBackgroundColor">Black</Color>
+            <Color x:Key="DarkSeparatorColor">White</Color>
+            <Color x:Key="DarkButtonTextColor">Black</Color>
 
             <!-- Content page definition-->
             <Style x:Key="BaseContentPage" TargetType="ContentPage">
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <RadialGradientBrush Center="0.5,0.5"
-                                             Radius="1.2">
-                            <GradientStop Color="{StaticResource MainBackgroundColor}"
-                                          Offset="0.1"/>
-                            <GradientStop Color="{StaticResource SecondaryBackgroundColor}"
-                                          Offset="1.0"/>
-                        </RadialGradientBrush>
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="BackgroundColor" 
+                        Value="{StaticResource MainBackgroundColor}"/>
+                <Setter Property="Visual" Value="Material"/>
+            </Style>
+            
+            <!--SwipeView default -->
+            <Style x:Key="SwipeViewDefault" TargetType="SwipeView">
+                <Setter Property="Padding" Value="0,2,0,0"/>
+                <Setter Property="Threshold" Value="85"/>
+            </Style>
+
+            <!-- Collection item frame rounded-->
+            <Style x:Key="CollectionItemFrameRounded" TargetType="Frame">
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="IsClippedToBounds" Value="True"/>
+            </Style> 
+
+            <!-- Collection item frame recatangular-->
+            <Style x:Key="CollectionItemFrameRectangular" TargetType="Frame">
             </Style>
 
             <!--Button -->
@@ -37,7 +56,8 @@
                         <VisualStateGroup x:Name="CommonStates">
                             <VisualState x:Name="Normal">
                                 <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
+                                    <Setter Property="BackgroundColor" Value="{StaticResource SecondaryColor}" />
+                                    <Setter Property="TextColor" Value="{StaticResource ButtonTextColor}"></Setter>
                                 </VisualState.Setters>
                             </VisualState>
                             <VisualState x:Name="Disabled">
@@ -52,16 +72,17 @@
 
             <!-- Entry -->
             <Style TargetType="Entry">
-                <Setter Property="BackgroundColor" Value="Black"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource MainBackgroundColor}"/>
                 <Setter Property="Opacity" Value="0.6"/>
-                <Setter Property="TextColor" Value="LightGray"/>
-                <Setter Property="PlaceholderColor" Value="White"/>
+                <Setter Property="TextColor" Value="{StaticResource SecondaryColor}"/>
+                <Setter Property="PlaceholderColor" Value="{StaticResource TertiaryColor}"/>
             </Style>
 
             <!--Collection item text template-->
             <Style x:Key="DataTemplateSeparator" TargetType="BoxView">
                <Setter Property="HeightRequest" Value="0.5"/>
-               <Setter Property= "BackgroundColor" Value="{StaticResource SeparatorColor}"/>
+                <Setter Property= "BackgroundColor" Value="{StaticResource SeparatorColor}"/>
+                <Setter Property="VerticalOptions" Value="End"/>
             </Style>
             <Style x:Key="DataTemplateItem" TargetType="StackLayout">
             </Style>

@@ -5,54 +5,58 @@
              Title="{Binding Title}"
              xmlns:local="clr-namespace:StageCompanion.ViewModels"  
              xmlns:model="clr-namespace:StageCompanion.Models"
-             Style="{DynamicResource BaseContentPage}"
-             x:Name="BrowseFoldersPage">
+             Style="{StaticResource BaseContentPage}"
+             x:Name="FoldersContentPage"
+             >
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="&#x2795;" Command="{Binding AddFolderCommand}" />
+        <ToolbarItem Text="Create new folder &#x2795;" Command="{Binding AddFolderCommand}" />
     </ContentPage.ToolbarItems>
     <!--
       x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
       https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
     -->
-    <RefreshView x:DataType="local:FoldersViewModel" Command="{Binding LoadFoldersCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+    <RefreshView Command="{Binding LoadFoldersCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}" x:Name="FoldersRefreshView">
         <CollectionView x:Name="FoldersListView"
                 ItemsSource="{Binding Folders}"
-                SelectionMode="None">
+                SelectionMode="Single"
+                SelectedItem="{Binding SelectedFolder}">
             <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="8*"/>
-                            </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="8*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                            <Image Grid.Column="0" Grid.Row="0" Source="folder_icon.png" Margin="8"/>
-                            <StackLayout Grid.Column="1" Grid.Row="0" Style="{DynamicResource DataTemplateItem}" Padding="10" x:DataType="model:Folder">
-                                <Label Text="{Binding Name}" 
+                <DataTemplate x:Name="FolderTemplate">
+                    <SwipeView x:Name="swipeView" Style="{StaticResource SwipeViewDefault}">
+                        <SwipeView.LeftItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Delete" 
+                                           BackgroundColor="Red"
+                                           IconImageSource="bin_icon.png"
+                                           Command="{Binding Source={x:Reference FoldersListView}, Path=BindingContext.DeleteFolderCommand}"
+                                           CommandParameter = "{Binding .}"/>
+                            </SwipeItems>
+                            </SwipeView.LeftItems>
+                        <Frame x:Name="itemFrame" Style="{DynamicResource CollectionItemFrameRounded}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="5*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="8*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="0.1*"/>
+                                </Grid.RowDefinitions>
+                                <Image Grid.Column="0" 
+                                   Grid.Row="0" 
+                                   ScaleX="0.9"
+                                   Source="folder_icon.png" 
+                                   HeightRequest="64" 
+                                   WidthRequest="64"/>
+                                <StackLayout Grid.Column="1" Grid.Row="0" Style="{DynamicResource DataTemplateItem}" x:DataType="model:Folder">
+                                    <Label Text="{Binding Name}" 
                                        Style="{DynamicResource ListItemTextStyle}" />
-                                <Label Text="{Binding Name}" 
-                                       Style="{DynamicResource ListItemDetailTextStyle}"/>
-                                <StackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer
-                                NumberOfTapsRequired="1"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:FoldersViewModel}}, Path=FolderTapped}"		
-                                CommandParameter="{Binding .}">
-                                    </TapGestureRecognizer>
-                                </StackLayout.GestureRecognizers>
-                            </StackLayout>
-
-                            <!-- Separator -->
-                            <BoxView Style="{DynamicResource DataTemplateSeparator}"
-                                     VerticalOptions="End"
-                                     Grid.ColumnSpan="2"
-                                     Grid.Row="1"
-                            />
-                    </Grid>
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
+                    </SwipeView>              
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
