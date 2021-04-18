@@ -1,7 +1,7 @@
-﻿using StageCompanion.Models;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using StageCompanion.Models;
 
-namespace StageCompanion.Interfaces
+namespace StageCompanion.Services.Interfaces
 {
     public interface IAuthService
     {       

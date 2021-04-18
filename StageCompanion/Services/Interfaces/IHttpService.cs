@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace StageCompanion.Interfaces
+namespace StageCompanion.Services.Interfaces
 {
     public interface IHttpService
     {

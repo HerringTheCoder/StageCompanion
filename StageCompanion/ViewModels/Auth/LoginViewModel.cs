@@ -1,8 +1,8 @@
 ﻿using System;
 using PropertyChanged;
-using StageCompanion.Interfaces;
 using StageCompanion.Models;
 using StageCompanion.Models.Responses;
+using StageCompanion.Services.Interfaces;
 using StageCompanion.Views;
 using Xamarin.Forms;
 

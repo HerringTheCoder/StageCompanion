@@ -1,9 +1,9 @@
-﻿using StageCompanion.Models;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Threading.Tasks;
+using StageCompanion.Models;
 
-namespace StageCompanion.Interfaces
+namespace StageCompanion.Services.Interfaces
 {
     public interface ITokenService
     {

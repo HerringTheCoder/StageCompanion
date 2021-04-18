@@ -1,22 +1,25 @@
-﻿using StageCompanion.Interfaces;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using StageCompanion.Services.Interfaces;
 using Xamarin.Forms;
 
 namespace StageCompanion.Services
 {
     public class HttpService : IHttpService
     {
-        public const string Url = "https://stage-companion.herokuapp.com/";
-        //TODO: create a config file
-        private string _token = "";
+        private readonly string _hostname = "https://stage-companion.herokuapp.com/";
+        //TODO: read hostname from a config file
         private readonly ISecureStorage _secureStorage;
 
-        public HttpService(ISecureStorage secureStorage)
+        public HttpService(ISecureStorage secureStorage, string hostname = null)
         {
             _secureStorage = secureStorage;
+            if (hostname != null)
+            {
+                _hostname = hostname;
+            }
         }
 
         public HttpService()
@@ -28,7 +31,7 @@ namespace StageCompanion.Services
         {
             using var client = new HttpClient
             {
-                BaseAddress = new Uri(Url)
+                BaseAddress = new Uri(_hostname)
             };
             var request = new HttpRequestMessage(method, path);
             if (!string.IsNullOrEmpty(json))
@@ -38,8 +41,8 @@ namespace StageCompanion.Services
             }
             if (useAuthorization)
             {
-                _token = await _secureStorage.GetAsync("token");
-                request.Headers.Add("Authorization", $"Bearer {_token}");
+                string token = await _secureStorage.GetAsync("token");
+                request.Headers.Add("Authorization", $"Bearer {token}");
             }
             request.Headers.Add("User-Agent", "StageCompanion-Mobile");
             return await client.SendAsync(request);

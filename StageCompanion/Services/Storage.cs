@@ -1,5 +1,5 @@
-﻿using StageCompanion.Interfaces;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using StageCompanion.Services.Interfaces;
 using Xamarin.Essentials;
 
 namespace StageCompanion.Services

@@ -3,9 +3,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Humanizer;
 using Newtonsoft.Json;
-using StageCompanion.Interfaces;
 using StageCompanion.Models;
 using StageCompanion.Repositories.Interfaces;
+using StageCompanion.Services.Interfaces;
 using Xamarin.Forms;
 
 namespace StageCompanion.Repositories
