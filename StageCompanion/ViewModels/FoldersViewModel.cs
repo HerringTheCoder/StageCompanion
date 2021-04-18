@@ -38,12 +38,7 @@ namespace StageCompanion.ViewModels
                 foreach (var folder in folders)
                 {
                     Folders.Add(folder);
-                }
-                Folders.Clear();
-                foreach (var folder in folders)
-                {
-                    Folders.Add(folder);
-                }
+                }              
             }
             catch (Exception ex)
             {

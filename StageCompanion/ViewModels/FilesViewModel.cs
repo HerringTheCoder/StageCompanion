@@ -34,7 +34,6 @@ namespace StageCompanion.ViewModels
         private async Task ExecuteLoadFilesCommand()
         {
             IsBusy = true;
-
             try
             {
                 Files.Clear();
@@ -99,7 +98,6 @@ namespace StageCompanion.ViewModels
             if (file == null)
                 return;
 
-            // This will push the ItemDetailPage onto the navigation stack
             await Shell.Current.GoToAsync($"{nameof(FileDetailPage)}?{nameof(FileDetailViewModel.FileId)}={file.Id}");
         }
     }
