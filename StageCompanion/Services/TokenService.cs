@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
-using StageCompanion.Interfaces;
 using StageCompanion.Models;
 using StageCompanion.Models.Responses;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Threading.Tasks;
+using StageCompanion.Services.Interfaces;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 

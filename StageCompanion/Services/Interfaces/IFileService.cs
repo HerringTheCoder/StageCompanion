@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
-namespace StageCompanion.Interfaces
+namespace StageCompanion.Services.Interfaces
 {
     public interface IFileService
     {

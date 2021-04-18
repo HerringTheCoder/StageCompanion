@@ -1,9 +1,9 @@
 using Moq;
-using StageCompanion.Interfaces;
 using StageCompanion.Services;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using StageCompanion.Services.Interfaces;
 using Xunit;
 
 namespace StageCompanion.Testing

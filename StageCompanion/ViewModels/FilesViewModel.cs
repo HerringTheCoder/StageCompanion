@@ -2,9 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using StageCompanion.Interfaces;
 using StageCompanion.Models;
 using StageCompanion.Repositories.Interfaces;
+using StageCompanion.Services.Interfaces;
 using StageCompanion.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;

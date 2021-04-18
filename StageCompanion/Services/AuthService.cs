@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using StageCompanion.Interfaces;
 using StageCompanion.Models;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -7,6 +6,7 @@ using Xamarin.Forms;
 using System;
 using System.Net;
 using StageCompanion.Models.Responses;
+using StageCompanion.Services.Interfaces;
 using Xamarin.Essentials;
 
 namespace StageCompanion.Services

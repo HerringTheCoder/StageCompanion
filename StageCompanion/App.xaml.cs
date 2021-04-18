@@ -2,12 +2,12 @@
 using Xamarin.Forms;
 using StageCompanion.Services;
 using StageCompanion.Models;
-using StageCompanion.Interfaces;
 using System.Threading.Tasks;
 using StageCompanion.Views;
 using System.Diagnostics;
 using StageCompanion.Repositories;
 using StageCompanion.Repositories.Interfaces;
+using StageCompanion.Services.Interfaces;
 using Xamarin.Essentials;
 
 namespace StageCompanion

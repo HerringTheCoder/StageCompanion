@@ -1,8 +1,8 @@
-﻿using StageCompanion.Interfaces;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using StageCompanion.Services.Interfaces;
 using Xamarin.Forms;
 
 namespace StageCompanion.Services
