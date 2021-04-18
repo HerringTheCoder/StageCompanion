@@ -35,7 +35,7 @@ namespace StageCompanion.Services
         }
 
         public async Task EncryptUserClaimsAsync(string token, Credentials credentials, JwtSecurityToken jwt)
-        {           
+        {
             await SecureStorage.SetAsync("token", token);
             await SecureStorage.SetAsync("password", credentials.Password);
             await SecureStorage.SetAsync("email", credentials.Email);
@@ -46,7 +46,7 @@ namespace StageCompanion.Services
         public async Task<bool> ValidateToken()
         {
             string expiredAt = await SecureStorage.GetAsync("expiredAt");
-            if (!string.IsNullOrEmpty(expiredAt))
+            if (string.IsNullOrEmpty(expiredAt))
             {
                 DateTime expiredAtTime = DateTime.Parse(expiredAt);
                 if (expiredAtTime > DateTime.UtcNow.AddSeconds(15))
