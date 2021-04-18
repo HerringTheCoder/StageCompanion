@@ -6,6 +6,7 @@
              mc:Ignorable="d"
              x:Class="StageCompanion.Views.RegisterPage"
              Style="{DynamicResource BaseContentPage}"
+             BackgroundColor="{StaticResource AuthBackgroundColor}"
              Shell.NavBarIsVisible="False">
     <ContentPage.Content>
         <ScrollView>
@@ -20,7 +21,7 @@
                 <Entry x:Name="PasswordConfirmationEntry" IsPassword="True" Text="{Binding Path=Credentials.PasswordConfirmation}" Placeholder="Password confirmation"/>
                 <Button VerticalOptions="Center" Text="Register" Command="{Binding RegisterCommand}"/>
                 <Button VerticalOptions="Center" Text="Back to Login" Command="{Binding LoginCommand}"/>
-                <ActivityIndicator Color="Orange" IsRunning="{Binding IsBusy}"/>
+                <ActivityIndicator Color="{StaticResource AuthActivityColor}" IsRunning="{Binding IsBusy}"/>
                 <Label Text="{Binding Path=Response.Message}" TextColor="{Binding Path=Response.ColorName}" FontSize="Large" HorizontalTextAlignment="Center"/>
             </StackLayout>
         </ScrollView>

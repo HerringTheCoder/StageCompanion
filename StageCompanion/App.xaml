@@ -24,6 +24,10 @@
             <Color x:Key="DarkMainBackgroundColor">Black</Color>
             <Color x:Key="DarkSeparatorColor">White</Color>
             <Color x:Key="DarkButtonTextColor">Black</Color>
+            
+            <!-- Login/Register theme -->
+            <Color x:Key="AuthBackgroundColor">Orange</Color>
+            <Color x:Key="AuthActivityColor">Black</Color>
 
             <!-- Content page definition-->
             <Style x:Key="BaseContentPage" TargetType="ContentPage">
