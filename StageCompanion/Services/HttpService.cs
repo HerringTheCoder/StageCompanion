@@ -3,8 +3,6 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using StageCompanion.Views;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace StageCompanion.Services
@@ -12,7 +10,19 @@ namespace StageCompanion.Services
     public class HttpService : IHttpService
     {
         public const string Url = "https://stage-companion.herokuapp.com/";
+        //TODO: create a config file
         private string _token = "";
+        private readonly ISecureStorage _secureStorage;
+
+        public HttpService(ISecureStorage secureStorage)
+        {
+            _secureStorage = secureStorage;
+        }
+
+        public HttpService()
+        {
+            _secureStorage = DependencyService.Get<ISecureStorage>();
+        }
 
         public async Task<HttpResponseMessage> SendRequestAsync(HttpMethod method, string path, string json = "", bool useAuthorization = true)
         {
@@ -28,7 +38,7 @@ namespace StageCompanion.Services
             }
             if (useAuthorization)
             {
-                _token = await SecureStorage.GetAsync("token");
+                _token = await _secureStorage.GetAsync("token");
                 request.Headers.Add("Authorization", $"Bearer {_token}");
             }
             request.Headers.Add("User-Agent", "StageCompanion-Mobile");

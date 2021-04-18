@@ -17,8 +17,7 @@ namespace StageCompanion
         public static User CurrentUser { get; set; }
 
         public App()
-        {
-            Device.SetFlags(new[] { "Brush_Experimental", "SwipeView_Experimental" });
+        {           
             InitializeComponent();
             DependencyService.Register<IHttpService, HttpService>();
             DependencyService.Register<IAuthService, AuthService>();
@@ -28,6 +27,7 @@ namespace StageCompanion
             DependencyService.Register<IFolderRepository, FolderRepository>();
             DependencyService.Register<IBandRepository, BandRepository>();
             DependencyService.Register<IInvitationRepository, InvitationRepository>();
+            DependencyService.Register<ISecureStorage, Storage>();
             MainPage = new AppShell();
         }
 
